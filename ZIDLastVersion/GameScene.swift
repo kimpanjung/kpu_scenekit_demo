@@ -61,10 +61,15 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
         setupCamera()
         setupLevel()
         setupGestureRecognizer(sceneView)
+        switchToWaitingForFirstTap()
 
     }
     
     func setupGestureRecognizer(view: SCNView){
+        let tapGesture = UITapGestureRecognizer(target: self, action: "handleTap:")
+        tapGesture.numberOfTapsRequired = 1
+        view.addGestureRecognizer(tapGesture)
+        
         lookGesture = UIPanGestureRecognizer(target: self, action: "lookGestureRecognized:")
         lookGesture.delegate = self
         view.addGestureRecognizer(lookGesture)
@@ -78,6 +83,12 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
         fireGesture = FireGestureRecognizer(target: self, action: "fireGestureRecognized:")
         fireGesture.delegate = self
         view.addGestureRecognizer(fireGesture)
+    }
+    
+    func handleTap(gesture: UIGestureRecognizer) {
+        if let tapGesture = gesture as? UITapGestureRecognizer {
+            switchToPlaying()
+        }
     }
     
     func setupPlayer(){
@@ -160,6 +171,8 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
         playerNode.addChildNode(spotLightNode)
     }
     
+    
+    // Camera walking & player direction vector
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         
         if gestureRecognizer == lookGesture {
@@ -182,10 +195,7 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
         let hAngle = acos(Float(translation.x) / 200) - Float(M_PI_2)
         let vAngle = acos(Float(translation.y) / 200) - Float(M_PI_2)
         
-        var tmpNode = SCNNode()
-        tmpNode.name = "heroNode"
-        
-        //rotate hero
+        //rotate palyer
         playerNode.physicsBody?.applyTorque(SCNVector4(x: 0, y: 1, z: 0, w: hAngle), impulse: true)
         
         //tilt camera
@@ -215,6 +225,108 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
         lastTappedFire = now
     }
     
+    
+    // Game state control //
+    
+    // MARK: Game State
+    func switchToWaitingForFirstTap() {
+        
+        gameState = GameState.WaitGame
+        
+        // Fade in
+        if let overlay = sceneView.overlaySKScene {
+            overlay.enumerateChildNodesWithName("GameRestart", usingBlock: { node, stop in
+                node.runAction(SKAction.sequence(
+                    [SKAction.fadeOutWithDuration(0.5),
+                        SKAction.removeFromParent()]))
+            })
+            
+            // Tap to play animation icon
+            let handNode = StartNode()
+            handNode.position = CGPoint(x: sceneView.bounds.size.width * 0.5, y: sceneView.bounds.size.height * 0.5)
+
+            overlay.addChild(handNode)
+        }
+    }
+    
+    
+    func switchToPlaying() {
+        
+        gameState = GameState.GameStart
+        
+        // 사운드 추가! //
+        if let overlay = sceneView.overlaySKScene {
+            // Remove tutorial
+            overlay.enumerateChildNodesWithName("Tutorial", usingBlock: { node, stop in
+                node.runAction(SKAction.sequence(
+                    [SKAction.fadeOutWithDuration(0.5),
+                        SKAction.removeFromParent()]))
+            })
+        }
+    }
+    
+    
+    func switchToGameOver() {
+        
+        gameState = GameState.GameOver
+        
+        if let overlay = sceneView.overlaySKScene {
+            
+            let gameOverLabel = LabelNode(
+                position: CGPoint(x: overlay.size.width/2.0, y: overlay.size.height/2.0),
+                size: 24, color: .whiteColor(),
+                text: "Game Over",
+                name: "GameOver")
+            
+            overlay.addChild(gameOverLabel)
+            
+            let clickToRestartLabel = LabelNode(
+                position: CGPoint(x: gameOverLabel.position.x, y: gameOverLabel.position.y - 24.0),
+                size: 14,
+                color: .whiteColor(),
+                text: "Tap to restart",
+                name: "GameOver")
+            
+            overlay.addChild(clickToRestartLabel)
+        }
+        physicsWorld.contactDelegate = nil
+    }
+    
+    
+    func switchToRestartLevel() {
+        
+        gameState = GameState.GameRestart
+        if let overlay = sceneView.overlaySKScene {
+            
+            // Fade out game over screen
+            overlay.enumerateChildNodesWithName("GameOver", usingBlock: { node, stop in
+                node.runAction(SKAction.sequence(
+                    [SKAction.fadeOutWithDuration(0.25),
+                        SKAction.removeFromParent()]))
+            })
+            
+            // Fade to black - and create a new level to play
+            let blackNode = SKSpriteNode(color: UIColor.blackColor(), size: overlay.frame.size)
+            blackNode.name = "GameRestart"
+            blackNode.alpha = 0.0
+            blackNode.position = CGPoint(x: sceneView.bounds.size.width/2.0, y: sceneView.bounds.size.height/2.0)
+            overlay.addChild(blackNode)
+            blackNode.runAction(SKAction.sequence([SKAction.fadeInWithDuration(0.5), SKAction.runBlock({
+                let newScene = GameScene(view: self.sceneView)
+                newScene.physicsWorld.contactDelegate = newScene
+                self.sceneView.scene = newScene
+                self.sceneView.delegate = newScene
+            })]))
+        }
+    }
+    
+    func physicsWorld(world: SCNPhysicsWorld, didBeginContact contact: SCNPhysicsContact) {
+        if gameState == GameState.GameStart {
+            switchToGameOver()
+        }
+    }
+    
+
     func renderer(aRenderer: SCNSceneRenderer, updateAtTime time: NSTimeInterval) {
         
         //get walk gesture translation
