@@ -14,6 +14,11 @@
 		899A68FD1AFFA85E0010A155 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 899A68FC1AFFA85E0010A155 /* Images.xcassets */; };
 		899A69001AFFA85E0010A155 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 899A68FE1AFFA85E0010A155 /* LaunchScreen.xib */; };
 		899A690C1AFFA85E0010A155 /* ZIDLastVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899A690B1AFFA85E0010A155 /* ZIDLastVersionTests.swift */; };
+		899A69161AFFAD9D0010A155 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899A69151AFFAD9D0010A155 /* GameScene.swift */; };
+		899A69181AFFADBA0010A155 /* SpriteKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 899A69171AFFADBA0010A155 /* SpriteKit.framework */; };
+		899A691A1AFFADC30010A155 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 899A69191AFFADC30010A155 /* UIKit.framework */; };
+		899A691C1AFFAF730010A155 /* GameControlConst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899A691B1AFFAF730010A155 /* GameControlConst.swift */; };
+		899A691E1AFFB14C0010A155 /* FireGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899A691D1AFFB14C0010A155 /* FireGestureRecognizer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +43,11 @@
 		899A69051AFFA85E0010A155 /* ZIDLastVersionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZIDLastVersionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		899A690A1AFFA85E0010A155 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		899A690B1AFFA85E0010A155 /* ZIDLastVersionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZIDLastVersionTests.swift; sourceTree = "<group>"; };
+		899A69151AFFAD9D0010A155 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		899A69171AFFADBA0010A155 /* SpriteKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpriteKit.framework; path = System/Library/Frameworks/SpriteKit.framework; sourceTree = SDKROOT; };
+		899A69191AFFADC30010A155 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		899A691B1AFFAF730010A155 /* GameControlConst.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameControlConst.swift; sourceTree = "<group>"; };
+		899A691D1AFFB14C0010A155 /* FireGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FireGestureRecognizer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +55,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				899A691A1AFFADC30010A155 /* UIKit.framework in Frameworks */,
+				899A69181AFFADBA0010A155 /* SpriteKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +73,8 @@
 		899A68E51AFFA85E0010A155 = {
 			isa = PBXGroup;
 			children = (
+				899A69191AFFADC30010A155 /* UIKit.framework */,
+				899A69171AFFADBA0010A155 /* SpriteKit.framework */,
 				899A68F01AFFA85E0010A155 /* ZIDLastVersion */,
 				899A69081AFFA85E0010A155 /* ZIDLastVersionTests */,
 				899A68EF1AFFA85E0010A155 /* Products */,
@@ -82,6 +96,9 @@
 				899A68F31AFFA85E0010A155 /* AppDelegate.swift */,
 				899A68F51AFFA85E0010A155 /* art.scnassets */,
 				899A68F71AFFA85E0010A155 /* GameViewController.swift */,
+				899A69151AFFAD9D0010A155 /* GameScene.swift */,
+				899A691B1AFFAF730010A155 /* GameControlConst.swift */,
+				899A691D1AFFB14C0010A155 /* FireGestureRecognizer.swift */,
 				899A68F91AFFA85E0010A155 /* Main.storyboard */,
 				899A68FC1AFFA85E0010A155 /* Images.xcassets */,
 				899A68FE1AFFA85E0010A155 /* LaunchScreen.xib */,
@@ -216,8 +233,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				899A69161AFFAD9D0010A155 /* GameScene.swift in Sources */,
 				899A68F81AFFA85E0010A155 /* GameViewController.swift in Sources */,
 				899A68F41AFFA85E0010A155 /* AppDelegate.swift in Sources */,
+				899A691E1AFFB14C0010A155 /* FireGestureRecognizer.swift in Sources */,
+				899A691C1AFFAF730010A155 /* GameControlConst.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,6 +367,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = ZIDLastVersion/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -357,6 +378,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = ZIDLastVersion/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
