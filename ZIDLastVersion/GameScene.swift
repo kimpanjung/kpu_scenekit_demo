@@ -32,10 +32,18 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
     var playerChildNode: SCNNode!
     let playerScene = SCNScene(named: "art.scnassets/ship.dae")
     // zombie
-    let zombieScene = SCNScene(named: "art.scnassets/ship.dae")
-    
-    var elevation: Float = 0
+    var zombieNode: SCNNode!
+    var zombieChildNode: SCNNode!
+//    let zombieScene = SCNScene(named: "zombie_skinned.dae")
+    let zombieScene = SCNScene(named: "rc_car.dae")
+    //mapNode
     var mapNode: SCNNode!
+    var mapChildNode: SCNNode!
+    let mapScene = SCNScene(named: "stage1")
+    
+    
+    // tap control //
+    var elevation: Float = 0
     
     var tapCount = 0
     var lastTappedFire: NSTimeInterval = 0
@@ -58,63 +66,142 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
     
     func initGame(){
         setupPlayer()
-        setupCamera()
+        setupZombie()
+        testPhysicsWorld()
+        //setupCamera()
+        setupMap()
         setupLevel()
-        setupGestureRecognizer(sceneView)
+        setupGestureRecognizer()
         switchToWaitingForFirstTap()
 
     }
     
-    func setupGestureRecognizer(view: SCNView){
+    func setupGestureRecognizer(){
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: "handleTap:")
         tapGesture.numberOfTapsRequired = 1
-        view.addGestureRecognizer(tapGesture)
+        sceneView.addGestureRecognizer(tapGesture)
         
         lookGesture = UIPanGestureRecognizer(target: self, action: "lookGestureRecognized:")
         lookGesture.delegate = self
-        view.addGestureRecognizer(lookGesture)
+        sceneView.addGestureRecognizer(lookGesture)
         
         //walk gesture
         walkGesture = UIPanGestureRecognizer(target: self, action: "walkGestureRecognized:")
         walkGesture.delegate = self
-        view.addGestureRecognizer(walkGesture)
+        sceneView.addGestureRecognizer(walkGesture)
         
         //fire gesture
         fireGesture = FireGestureRecognizer(target: self, action: "fireGestureRecognized:")
         fireGesture.delegate = self
-        view.addGestureRecognizer(fireGesture)
+        sceneView.addGestureRecognizer(fireGesture)
     }
     
+    // tap to start!
     func handleTap(gesture: UIGestureRecognizer) {
         if let tapGesture = gesture as? UITapGestureRecognizer {
             switchToPlaying()
         }
     }
     
+    func setupMap(){
+        mapNode = SCNNode()
+        mapNode.name = "map"
+        mapNode.position = SCNVector3(x: 0, y: 0, z: 0)
+        
+        mapChildNode = mapScene!.rootNode.childNodeWithName("Dummymaster", recursively: false)!
+        mapChildNode.position = SCNVector3(x: 0.0, y: 0.0, z: 0)
+        
+        let body = SCNPhysicsBody.staticBody()
+        mapChildNode.physicsBody = body
+        mapChildNode.physicsBody?.categoryBitMask = CollisionCategory.Map
+        rootNode.addChildNode(mapChildNode)
+        
+//        
+//        mapNode.addChildNode(mapChildNode)
+//        
+//        SCNPhysicsShape(geometry: SCNCylinder(radius: 0.2, height: 1), options: nil)
+//        SCNPhysicsBody(type: .Dynamic, shape: SCNPhysicsShape(node: zombieChildNode , options: nil))
+//        
+//        mapNode.physicsBody?.categoryBitMask = CollisionCategory.Map
+//        mapNode.physicsBody?.collisionBitMask = CollisionCategory.All
+//        mapNode.physicsBody?.velocityFactor = SCNVector3(x: 5, y:1, z: 5) // ***(not) affected by gravity
+//        
+//        rootNode.addChildNode(mapNode)
+    }
+    
     func setupPlayer(){
+        // player Node
         playerNode = SCNNode()
-        playerNode.name = "Player"
-        playerNode.position = SCNVector3Zero
-        playerNode.position.y = 0.2
+        playerNode.position = SCNVector3(x: 0.0, y: 0.5, z: 0.0)
         
-        let playerMaterial = SCNMaterial()
-        playerMaterial.diffuse.contents = UIImage(named: "art.scnassets/texture.png")
-        playerMaterial.locksAmbientWithDiffuse = false
-        
-//        playerChildNode = playerScene!.rootNode.childNodeWithName("ship", recursively: false)!
-//        playerChildNode.geometry!.firstMaterial = playerMaterial
-//        playerChildNode.position = SCNVector3(x: 0.0, y: 0.0, z: 0.075)
-//        
-//        playerNode.addChildNode(playerChildNode)
-        
-//        // Create a physicsbody for collision detection
-//        let playerPhysicsBodyShape = SCNPhysicsShape(geometry: SCNBox(width: 0.08, height: 0.08, length: 0.08, chamferRadius: 0.0), options: nil)
-//        
-//        playerChildNode.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Kinematic, shape: playerPhysicsBodyShape)
-//        playerChildNode.physicsBody!.categoryBitMask = CollisionCategory.Player
-//        playerChildNode.physicsBody!.collisionBitMask = CollisionCategory.Zombie
-        
+        playerNode.physicsBody = SCNPhysicsBody(type: .Dynamic, shape: SCNPhysicsShape(geometry: SCNCylinder(radius: 0.2, height: 1), options: nil))
+        playerNode.physicsBody?.angularDamping = 0.9999999
+        playerNode.physicsBody?.damping = 0.9999999
+        playerNode.physicsBody?.rollingFriction = 0
+        playerNode.physicsBody?.friction = 0
+        playerNode.physicsBody?.restitution = 0
+        playerNode.physicsBody?.velocityFactor = SCNVector3(x: 5, y:0, z: 5) // (not y==0 ) affected by gravity
+        playerNode.physicsBody?.categoryBitMask = CollisionCategory.Player
+        playerNode.physicsBody?.collisionBitMask = CollisionCategory.All ^ CollisionCategory.Bullet
         rootNode.addChildNode(playerNode)
+        
+        //add a camera node
+        camNode = SCNNode()
+        camNode.position = SCNVector3(x: 0, y: 0, z: 0)
+        playerNode.addChildNode(camNode)
+        
+        //add camera
+        let camera = SCNCamera()
+        camera.zNear = 0.01
+        camera.zFar = 500
+        camNode.camera = camera
+
+    }
+    
+    func setupZombie(){
+        zombieNode = SCNNode()
+        zombieNode.name = "zombie"
+        zombieNode.position = SCNVector3(x: 0, y: 2, z: -10)
+        
+//        let playerMaterial = SCNMaterial()
+//        playerMaterial.diffuse.contents = UIImage(named: "art.scnassets/texture.png")
+//        playerMaterial.locksAmbientWithDiffuse = false
+        
+        zombieChildNode = zombieScene!.rootNode.childNodeWithName("rccarBody", recursively: false)!
+        
+        var min:SCNVector3 = SCNVector3(x: 0, y: 0, z: 0)
+        var max:SCNVector3 = SCNVector3(x: 0, y: 0, z: 0)
+        zombieChildNode!.getBoundingBoxMin(&min, max: &max)
+        
+        let box = SCNBox(width: CGFloat(max.x-min.x), height: CGFloat(max.y-min.y), length: CGFloat(max.z-min.z), chamferRadius: 0.0)
+
+        
+//        zombieChildNode.geometry!.firstMaterial = playerMaterial
+        zombieChildNode.position = SCNVector3(x: 0.0, y: 0.0, z: 0)
+        zombieNode.addChildNode(zombieChildNode)
+        
+//        zombieNode.physicsBody = SCNPhysicsBody.dynamicBody()
+
+//        SCNPhysicsBody(type: .Dynamic, shape: SCNPhysicsShape(node: zombieChildNode!, options: nil))
+        SCNPhysicsShape(geometry: SCNCylinder(radius: 0.2, height: 1), options: nil)
+        SCNPhysicsBody(type: .Dynamic, shape: SCNPhysicsShape(node: zombieChildNode , options: nil))
+        
+        zombieNode.physicsBody?.categoryBitMask = CollisionCategory.Monster
+        zombieNode.physicsBody?.collisionBitMask = CollisionCategory.All
+        zombieNode.physicsBody?.velocityFactor = SCNVector3(x: 5, y:-1, z: 5) // ***(not) affected by gravity
+        
+        rootNode.addChildNode(zombieNode)
+    }
+    
+    func testPhysicsWorld(){
+        let monsterNode = SCNNode()
+        monsterNode.position = SCNVector3(x: 0, y: 0.4, z: -20)
+        monsterNode.geometry = SCNCylinder(radius: 0.15, height: 0.6)
+        monsterNode.physicsBody = SCNPhysicsBody(type: .Dynamic, shape: SCNPhysicsShape(geometry: monsterNode.geometry!, options: nil))
+        monsterNode.physicsBody?.categoryBitMask = CollisionCategory.Monster
+        monsterNode.physicsBody?.collisionBitMask = CollisionCategory.All
+        rootNode.addChildNode(monsterNode)
     }
     
     
@@ -137,7 +224,7 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
         
         let floorNode = SCNNode(geometry: floor)
         floorNode.position = SCNVector3Make(0, -0.1, 0)
-        floorNode.geometry?.firstMaterial?.diffuse.contents = "desert.jpeg"
+        floorNode.geometry?.firstMaterial?.diffuse.contents = "desertTexture.jpg"
         //floorNode.geometry?.firstMaterial?.diffuse.contents = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
         floorNode.geometry?.firstMaterial?.diffuse.contentsTransform = SCNMatrix4MakeScale(0.5, 1, 0.5);
         floorNode.geometry?.firstMaterial?.locksAmbientWithDiffuse = false
@@ -150,7 +237,7 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
         let staticBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: nil)
         floorNode.physicsBody?.categoryBitMask = CollisionCategory.Map
         floorNode.physicsBody = staticBody
-        rootNode.addChildNode(floorNode)
+        //rootNode.addChildNode(floorNode)
         
         // create and add an ambient light to the scene
         let ambientLightNode = SCNNode()
@@ -191,7 +278,7 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
     func lookGestureRecognized(gesture: UIPanGestureRecognizer) {
         
         //get translation and convert to rotation
-        let translation = gesture.translationInView(self.sceneView)
+        let translation = gesture.translationInView(sceneView)
         let hAngle = acos(Float(translation.x) / 200) - Float(M_PI_2)
         let vAngle = acos(Float(translation.y) / 200) - Float(M_PI_2)
         
@@ -203,18 +290,18 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
         camNode.rotation = SCNVector4(x: 1, y: 0, z: 0, w: elevation)
         
         //reset translation
-        gesture.setTranslation(CGPointZero, inView: self.sceneView)
+        gesture.setTranslation(CGPointZero, inView: sceneView)
     }
     
     func walkGestureRecognized(gesture: UIPanGestureRecognizer) {
-        
+
         if gesture.state == UIGestureRecognizerState.Ended || gesture.state == UIGestureRecognizerState.Cancelled {
-            gesture.setTranslation(CGPointZero, inView: self.sceneView)
+            gesture.setTranslation(CGPointZero, inView: sceneView)
         }
     }
     
     func fireGestureRecognized(gesture: FireGestureRecognizer) {
-        
+
         //update timestamp
         let now = CFAbsoluteTimeGetCurrent()
         if now - lastTappedFire < autofireTapTimeThreshold {
@@ -320,17 +407,17 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
         }
     }
     
-    func physicsWorld(world: SCNPhysicsWorld, didBeginContact contact: SCNPhysicsContact) {
-        if gameState == GameState.GameStart {
-            switchToGameOver()
-        }
-    }
+//    func physicsWorld(world: SCNPhysicsWorld, didBeginContact contact: SCNPhysicsContact) {
+////        if gameState == GameState.GameStart {
+////            switchToGameOver()
+////        }
+//    }
     
 
     func renderer(aRenderer: SCNSceneRenderer, updateAtTime time: NSTimeInterval) {
         
         //get walk gesture translation
-        var translation = walkGesture.translationInView(self.sceneView)
+        var translation = walkGesture.translationInView(sceneView)
         
         //create impulse vector for hero
         let angle = playerNode.presentationNode().rotation.w * playerNode.presentationNode().rotation.y
@@ -368,9 +455,9 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
                 bulletNode.position = SCNVector3(x: playerNode.presentationNode().position.x, y: 0.4, z: playerNode.presentationNode().position.z)
                 bulletNode.physicsBody = SCNPhysicsBody(type: .Dynamic, shape: SCNPhysicsShape(geometry: bulletNode.geometry!, options: nil))
                 bulletNode.physicsBody?.categoryBitMask = CollisionCategory.Bullet
-                bulletNode.physicsBody?.collisionBitMask = CollisionCategory.None ^ CollisionCategory.Player | CollisionCategory.Map
+                bulletNode.physicsBody?.collisionBitMask = CollisionCategory.All ^ CollisionCategory.Player | CollisionCategory.Map
                 bulletNode.physicsBody?.velocityFactor = SCNVector3(x: 1, y: 0.5, z: 1)
-                self.sceneView.scene!.rootNode.addChildNode(bulletNode)
+                sceneView.scene!.rootNode.addChildNode(bulletNode)
                 
                 //apply impulse
                 var impulse = SCNVector3(x: direction.x * Float(bulletImpulse), y: direction.y * Float(bulletImpulse), z: direction.z * Float(bulletImpulse))

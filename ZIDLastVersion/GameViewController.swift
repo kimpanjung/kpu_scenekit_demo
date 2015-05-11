@@ -23,16 +23,21 @@ class GameViewController: UIViewController {
         super.viewDidAppear(animated)
         
         // Set up the SCNView
-        sceneView.backgroundColor = UIColor(red: 100.0/255.0, green: 149.0/255.0, blue: 237.0/255.0, alpha: 1.0)
+        sceneView.backgroundColor = UIColor.blackColor()
         sceneView.showsStatistics = true
+        // antialiasing~!
         sceneView.antialiasingMode = SCNAntialiasingMode.Multisampling2X
         sceneView.overlaySKScene = SKScene(size: view.bounds.size)
-        sceneView.playing = true
+        sceneView.playing = false
         
         // Set up the scene
         let scene = GameScene(view: sceneView)
-        scene.rootNode.hidden = true
-        scene.physicsWorld.contactDelegate = scene
+        //scene.rootNode.hidden = true
+        //scene.physicsWorld.contactDelegate = scene
+        
+        scene.physicsWorld.gravity = SCNVector3(x: 0, y: -5, z: 0)
+        scene.physicsWorld.timeStep = 1.0/360
+        scene.physicsWorld.speed = 4.0;
         
         // Start playing the scene
         sceneView.scene = scene

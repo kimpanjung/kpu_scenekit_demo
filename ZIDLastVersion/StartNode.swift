@@ -45,8 +45,8 @@ class StartNode : SKNode {
         
         // Create a sprite node abd animate it
         let handSprite = SKSpriteNode(texture: handTexture)
-//        handSprite.xScale = 1.0
-//        handSprite.yScale = 1.0
+//       handSprite.xScale = 0.1
+//        handSprite.yScale = 0.1
         handSprite.runAction(SKAction.repeatActionForever(handAnimation))
         
         addChild(handSprite)

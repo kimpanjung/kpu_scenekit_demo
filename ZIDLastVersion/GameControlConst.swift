@@ -15,9 +15,13 @@ enum GameState{
 }
 
 struct CollisionCategory {
-    static let None: Int = 0
-    static let Player: Int = 0b1
-    static let Zombie: Int = 0b10
-    static let Map: Int = 0b100
-    static let Bullet: Int = 0b1000
+    static let None: Int = 0b00000000
+    static let All: Int = 0b11111111
+    // static object //
+    static let Map: Int = 0b00000001
+    
+    // dynamic object //
+    static let Player: Int = 0b00000010
+    static let Monster: Int = 0b00000100
+    static let Bullet: Int = 0b00001000
 }
