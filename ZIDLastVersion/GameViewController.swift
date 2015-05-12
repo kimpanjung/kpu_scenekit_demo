@@ -38,6 +38,8 @@ class GameViewController: UIViewController {
         scene.physicsWorld.gravity = SCNVector3(x: 0, y: -5, z: 0)
         scene.physicsWorld.timeStep = 1.0/360
         scene.physicsWorld.speed = 4.0;
+        scene.background.contents = UIImage(named: "ih_shrine-skybox02.jpg")
+
         
         // Start playing the scene
         sceneView.scene = scene

@@ -9,7 +9,9 @@
 import SceneKit
 import SpriteKit
 
+
 class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,UIGestureRecognizerDelegate {
+
     
     var sceneView: SCNView!
     var gameState = GameState.WaitGame
@@ -54,6 +56,7 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
     
     init(view: SCNView) {
         sceneView = view
+
         super.init()
         // game initialize method
         initGame()
@@ -65,6 +68,7 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
     }
     
     func initGame(){
+
         setupPlayer()
         setupZombie()
         testPhysicsWorld()
@@ -114,7 +118,7 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
         
         let body = SCNPhysicsBody.staticBody()
         mapChildNode.physicsBody = body
-        mapChildNode.physicsBody?.categoryBitMask = CollisionCategory.Map
+        //mapChildNode.physicsBody?.categoryBitMask = CollisionCategory.Map
         rootNode.addChildNode(mapChildNode)
         
 //        
@@ -133,7 +137,7 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
     func setupPlayer(){
         // player Node
         playerNode = SCNNode()
-        playerNode.position = SCNVector3(x: 0.0, y: 0.5, z: 0.0)
+        playerNode.position = SCNVector3(x: 0.0, y: ControlVariable.playerHeight, z: 0.0)
         
         playerNode.physicsBody = SCNPhysicsBody(type: .Dynamic, shape: SCNPhysicsShape(geometry: SCNCylinder(radius: 0.2, height: 1), options: nil))
         playerNode.physicsBody?.angularDamping = 0.9999999
@@ -452,11 +456,25 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
                     }()
                 bullets.append(bulletNode)
                 bulletNode.geometry = SCNBox(width: CGFloat(bulletRadius) * 2, height: CGFloat(bulletRadius) * 2, length: CGFloat(bulletRadius) * 2, chamferRadius: CGFloat(bulletRadius))
-                bulletNode.position = SCNVector3(x: playerNode.presentationNode().position.x, y: 0.4, z: playerNode.presentationNode().position.z)
+                bulletNode.position = SCNVector3(x: playerNode.presentationNode().position.x, y: playerNode.presentationNode().position.y, z: playerNode.presentationNode().position.z)
                 bulletNode.physicsBody = SCNPhysicsBody(type: .Dynamic, shape: SCNPhysicsShape(geometry: bulletNode.geometry!, options: nil))
+                
+                bulletNode.geometry?.firstMaterial?.diffuse.contents = "buttletTexture.jpg"
+                bulletNode.geometry?.firstMaterial?.diffuse.contentsTransform = SCNMatrix4MakeScale(0.5, 1, 0.5);
+                bulletNode.geometry?.firstMaterial?.locksAmbientWithDiffuse = true
+                
+                
+                // ---- particle
+                // Fire Particle System, attached to the boing ball
+                let fire = SCNParticleSystem(named: "bulletParticle3D", inDirectory: nil)
+                fire.emitterShape = bulletNode.geometry
+                bulletNode.addParticleSystem(fire)
+                // ----
+                
                 bulletNode.physicsBody?.categoryBitMask = CollisionCategory.Bullet
-                bulletNode.physicsBody?.collisionBitMask = CollisionCategory.All ^ CollisionCategory.Player | CollisionCategory.Map
-                bulletNode.physicsBody?.velocityFactor = SCNVector3(x: 1, y: 0.5, z: 1)
+                bulletNode.physicsBody?.collisionBitMask = CollisionCategory.All ^ CollisionCategory.Player
+                    //| CollisionCategory.Map
+                bulletNode.physicsBody?.velocityFactor = SCNVector3(x: 1, y: 0.2, z: 1)
                 sceneView.scene!.rootNode.addChildNode(bulletNode)
                 
                 //apply impulse
@@ -467,6 +485,17 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
                 lastFired = now
             }
         }
+    }
+    
+    func torchLight() -> SCNLight
+    {
+        var light = SCNLight()
+        light.type = SCNLightTypeOmni;
+        light.color = SKColor.orangeColor()
+        light.attenuationStartDistance = 350;
+        light.attenuationEndDistance = 400;
+        light.attenuationFalloffExponent = 1;
+        return light;
     }
 
     
