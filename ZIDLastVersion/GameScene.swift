@@ -17,7 +17,7 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
     var gameState = GameState.WaitGame
     
     // Bullet //
-    let autofireTapTimeThreshold = 0.2
+    let autofireTapTimeThreshold = 0.5
     let maxRoundsPerSecond = 30
     let bulletRadius = 0.05
     let bulletImpulse = 15
@@ -37,11 +37,11 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
     var zombieNode: SCNNode!
     var zombieChildNode: SCNNode!
 //    let zombieScene = SCNScene(named: "zombie_skinned.dae")
-    let zombieScene = SCNScene(named: "rc_car.dae")
+    let zombieScene = SCNScene(named: "zombietest")
     //mapNode
     var mapNode: SCNNode!
     var mapChildNode: SCNNode!
-    let mapScene = SCNScene(named: "stage1")
+    let mapScene = SCNScene(named: "test4")
     
     
     // tap control //
@@ -57,6 +57,7 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
     init(view: SCNView) {
         sceneView = view
 
+
         super.init()
         // game initialize method
         initGame()
@@ -71,7 +72,7 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
 
         setupPlayer()
         setupZombie()
-        testPhysicsWorld()
+        //testPhysicsWorld()
         //setupCamera()
         setupMap()
         setupLevel()
@@ -111,17 +112,25 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
     func setupMap(){
         mapNode = SCNNode()
         mapNode.name = "map"
+//        mapNode.rotation = SCNVector4Make(0, 0, 1, 90.0)
         mapNode.position = SCNVector3(x: 0, y: 0, z: 0)
         
         mapChildNode = mapScene!.rootNode.childNodeWithName("Dummymaster", recursively: false)!
         mapChildNode.position = SCNVector3(x: 0.0, y: 0.0, z: 0)
+        mapChildNode.scale = SCNVector3(x: 100, y: 100, z: 100)
+//        mapChildNode.rotation = SCNVector4Make(0, 0, 0, 90.0)
         
         let body = SCNPhysicsBody.staticBody()
         mapChildNode.physicsBody = body
         //mapChildNode.physicsBody?.categoryBitMask = CollisionCategory.Map
         rootNode.addChildNode(mapChildNode)
         
-//        
+        
+        println("\(sizeOfBoundingBoxFromNode(mapChildNode).width), \(sizeOfBoundingBoxFromNode(mapChildNode).height), \(sizeOfBoundingBoxFromNode(mapChildNode).depth)")
+        // 290 29 30
+        
+        
+//
 //        mapNode.addChildNode(mapChildNode)
 //        
 //        SCNPhysicsShape(geometry: SCNCylinder(radius: 0.2, height: 1), options: nil)
@@ -164,44 +173,43 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
     }
     
     func setupZombie(){
-        zombieNode = SCNNode()
-        zombieNode.name = "zombie"
-        zombieNode.position = SCNVector3(x: 0, y: 2, z: -10)
         
-//        let playerMaterial = SCNMaterial()
-//        playerMaterial.diffuse.contents = UIImage(named: "art.scnassets/texture.png")
-//        playerMaterial.locksAmbientWithDiffuse = false
+        zombieNode = zombieScene!.rootNode.childNodeWithName("root", recursively: false)
+        zombieNode.name = "zombieNode"
+        zombieNode.position = SCNVector3Make(0, 0, -50)
+        zombieNode.scale = SCNVector3Make(10, 10, 10)
         
-        zombieChildNode = zombieScene!.rootNode.childNodeWithName("rccarBody", recursively: false)!
-        
-        var min:SCNVector3 = SCNVector3(x: 0, y: 0, z: 0)
-        var max:SCNVector3 = SCNVector3(x: 0, y: 0, z: 0)
-        zombieChildNode!.getBoundingBoxMin(&min, max: &max)
-        
-        let box = SCNBox(width: CGFloat(max.x-min.x), height: CGFloat(max.y-min.y), length: CGFloat(max.z-min.z), chamferRadius: 0.0)
-
-        
-//        zombieChildNode.geometry!.firstMaterial = playerMaterial
-        zombieChildNode.position = SCNVector3(x: 0.0, y: 0.0, z: 0)
-        zombieNode.addChildNode(zombieChildNode)
-        
-//        zombieNode.physicsBody = SCNPhysicsBody.dynamicBody()
-
-//        SCNPhysicsBody(type: .Dynamic, shape: SCNPhysicsShape(node: zombieChildNode!, options: nil))
-        SCNPhysicsShape(geometry: SCNCylinder(radius: 0.2, height: 1), options: nil)
-        SCNPhysicsBody(type: .Dynamic, shape: SCNPhysicsShape(node: zombieChildNode , options: nil))
-        
+        let zombieShape = SCNPhysicsShape(geometry: SCNCylinder(radius: 1, height: 6), options: nil)
+        zombieNode.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Kinematic, shape: zombieShape)
         zombieNode.physicsBody?.categoryBitMask = CollisionCategory.Monster
-        zombieNode.physicsBody?.collisionBitMask = CollisionCategory.All
-        zombieNode.physicsBody?.velocityFactor = SCNVector3(x: 5, y:-1, z: 5) // ***(not) affected by gravity
+        zombieNode.physicsBody?.collisionBitMask = CollisionCategory.Bullet
         
+        sizeOfBoundingBoxFromNode(zombieNode)
+
         rootNode.addChildNode(zombieNode)
+    }
+    
+    func sizeOfBoundingBoxFromNode(node: SCNNode) -> (width: Float, height: Float, depth: Float) {
+        var boundingBoxMin = SCNVector3Zero
+        var boundingBoxMax = SCNVector3Zero
+        let boundingBox = node.getBoundingBoxMin(&boundingBoxMin, max: &boundingBoxMax)
+        
+        let width = boundingBoxMax.x - boundingBoxMin.x
+        let height = boundingBoxMax.y - boundingBoxMin.y
+        let depth = boundingBoxMax.z - boundingBoxMin.z
+        
+        
+        println("\(width), \(height), \(depth)")
+
+        
+        return (width, height, depth)
     }
     
     func testPhysicsWorld(){
         let monsterNode = SCNNode()
         monsterNode.position = SCNVector3(x: 0, y: 0.4, z: -20)
-        monsterNode.geometry = SCNCylinder(radius: 0.15, height: 0.6)
+        monsterNode.rotation = SCNVector4(x: 0, y: 0, z: 1, w: 90)
+        monsterNode.geometry = SCNCylinder(radius: 1, height: 6)
         monsterNode.physicsBody = SCNPhysicsBody(type: .Dynamic, shape: SCNPhysicsShape(geometry: monsterNode.geometry!, options: nil))
         monsterNode.physicsBody?.categoryBitMask = CollisionCategory.Monster
         monsterNode.physicsBody?.collisionBitMask = CollisionCategory.All
@@ -238,9 +246,17 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
         floorNode.geometry!.firstMaterial?.diffuse.wrapT = SCNWrapMode.Repeat
         floorNode.geometry!.firstMaterial?.diffuse.mipFilter = SCNFilterMode.Linear
         
-        let staticBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: nil)
-        floorNode.physicsBody?.categoryBitMask = CollisionCategory.Map
-        floorNode.physicsBody = staticBody
+        let particleNode = SCNNode()
+        particleNode.position = SCNVector3(x: 0, y: 10, z: -20)
+        let fire = SCNParticleSystem(named: "rainParticle", inDirectory: nil)
+        particleNode.addParticleSystem(fire)
+        rootNode.addChildNode(particleNode)
+        
+//        let staticBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Static, shape: nil)
+//        floorNode.physicsBody?.categoryBitMask = CollisionCategory.Map
+//        floorNode.physicsBody = staticBody
+        
+        
         //rootNode.addChildNode(floorNode)
         
         // create and add an ambient light to the scene
@@ -266,11 +282,40 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
     // Camera walking & player direction vector
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         
+        //test if we hit the camera button
+//        let scene = OverlayScene(size: sceneView.bounds.size)
+//        var p = touch.locationInView(sceneView)
+////        p = scene.convertPointFromView(p)
+//        let node = scene.nodeAtPoint(p)
+//        
+//        
+//        if node.name != nil && node.name == "shoot" {
+//            //play a sound
+//            node.runAction(SKAction.playSoundFileNamed("bulletSound.mp3", waitForCompletion: false))
+//            
+//            p = node.position
+//            
+//            //change the point of view
+//
+//        }
+//        
+//        println("\(p)")
+        
+        //update the total number of touches on screen
+
+
+        
         if gestureRecognizer == lookGesture {
             return touch.locationInView(sceneView).x > sceneView.frame.size.width / 2
+            
         } else if gestureRecognizer == walkGesture {
             return touch.locationInView(sceneView).x < sceneView.frame.size.width / 2
+            
         }
+        //else if gestureRecognizer == fireGesture{
+//            return touch.locationInView(sceneView) == p
+//        }
+
         return true
     }
     
@@ -308,6 +353,8 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
 
         //update timestamp
         let now = CFAbsoluteTimeGetCurrent()
+        
+        
         if now - lastTappedFire < autofireTapTimeThreshold {
             tapCount += 1
         } else {
@@ -345,14 +392,21 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
         
         gameState = GameState.GameStart
         
+
+        //physicsWorld.contactDelegate = nil
+
+        
         // 사운드 추가! //
         if let overlay = sceneView.overlaySKScene {
+            
             // Remove tutorial
             overlay.enumerateChildNodesWithName("Tutorial", usingBlock: { node, stop in
                 node.runAction(SKAction.sequence(
                     [SKAction.fadeOutWithDuration(0.5),
                         SKAction.removeFromParent()]))
             })
+            
+            sceneView.overlaySKScene = OverlayScene(size: sceneView.bounds.size)
         }
     }
     
@@ -497,6 +551,8 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
         light.attenuationFalloffExponent = 1;
         return light;
     }
+    
+
 
     
 }

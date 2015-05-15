@@ -34,16 +34,19 @@ class StartNode : SKNode {
 //        addChild(gameStartLabel)
         
         
-        let handTexture = SKTexture(imageNamed:"GameBackgroundImage1024.png")
+        let handTexture = SKTexture(imageNamed:"tap1.png")
         handTexture.filteringMode = SKTextureFilteringMode.Nearest
-        let handTextureClick = SKTexture(imageNamed:"GameBackgroundImage1024text.png")
+        let handTextureClick = SKTexture(imageNamed:"tap2.png")
         handTextureClick.filteringMode = SKTextureFilteringMode.Nearest
         
         
         // Create animation
-        let handAnimation = SKAction.animateWithTextures([handTexture, handTextureClick], timePerFrame:0.3)
-        
+//        let handAnimation = SKAction.animateWithTextures([handTexture, handTextureClick], timePerFrame:0.3)
+        let handAnimation = SKAction.animateWithTextures([handTexture, handTextureClick], timePerFrame: 0.3, resize: true, restore: true)
         // Create a sprite node abd animate it
+//        let sound = SKAction.playSoundFileNamed("bulletSound.mp3", waitForCompletion: true)
+//        runAction(sound)
+        
         let handSprite = SKSpriteNode(texture: handTexture)
 //       handSprite.xScale = 0.1
 //        handSprite.yScale = 0.1

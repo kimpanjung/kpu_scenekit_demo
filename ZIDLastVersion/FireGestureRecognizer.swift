@@ -8,6 +8,8 @@
 
 import UIKit
 import UIKit.UIGestureRecognizerSubclass
+import SceneKit
+import SpriteKit
 
 class FireGestureRecognizer: UIGestureRecognizer {
     
@@ -15,9 +17,29 @@ class FireGestureRecognizer: UIGestureRecognizer {
     var distanceThreshold = 5.0
     private var startTimes = NSMutableDictionary()
     
+    //let scnView = UIView() as! GameView
+
+    
+    
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         
         //let touch = (touches.first as! UITouch).timestamp
+        
+        
+        //test if we hit the camera button
+        let scene = OverlayScene(size: )
+        var p = touch.locationInView(self)
+        p = scene.convertPointFromView(p)
+        let node = scene.nodeAtPoint(p)
+        
+        if node.name != nil && node.name == "shoot" {
+            //play a sound
+            node.runAction(SKAction.playSoundFileNamed("click.caf", waitForCompletion: false))
+            //change the point of view
+            changePointOfView()
+            return
+        }
+
         
         //record the start times of each touch
         for touch in touches {
@@ -25,10 +47,13 @@ class FireGestureRecognizer: UIGestureRecognizer {
         }
     }
     
+
     override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
         
         //discard any touches that have moved
         for touch in touches {
+            
+            
             let touch = touches.first as? UITouch
             
             let newPos = touch!.locationInView(view)

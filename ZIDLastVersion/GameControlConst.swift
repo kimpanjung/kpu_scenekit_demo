@@ -27,5 +27,5 @@ struct CollisionCategory {
 }
 
 struct ControlVariable {
-    static let playerHeight: Float = 1.5
+    static let playerHeight: Float = 5.0
 }
