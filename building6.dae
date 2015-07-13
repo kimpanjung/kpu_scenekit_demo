@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+    <asset>
+        <contributor>
+            <author>Unknown</author>
+            <authoring_tool>Cheetah3D</authoring_tool>
+            <comments>http://www.cheetah3d.com</comments>
+            <copyright>Unknown</copyright>
+        </contributor>
+        <created>2015-06-08T14:12:07Z</created>
+        <modified>2015-06-08T14:12:07Z</modified>
+        <unit meter="1.0" name="meter"/>
+        <up_axis>Y_UP</up_axis>
+    </asset>
+    <library_cameras>
+        <camera id="ID679516496-persp">
+            <optics>
+                <technique_common>
+                    <perspective>
+                        <yfov>40.000000</yfov>
+                        <aspect_ratio>0.6</aspect_ratio>
+                        <znear>0.010000</znear>
+                        <zfar>1000.000000</zfar>
+                    </perspective>
+                </technique_common>
+            </optics>
+        </camera>
+    </library_cameras>
+    <library_images>
+        <image id="material0-diff-tex">
+            <init_from>file:///building6.jpg</init_from>
+        </image>
+    </library_images>
+    <library_materials>
+        <material id="material0" name="12_-_Default">
+            <instance_effect url="#material0-fx"/>
+        </material>
+    </library_materials>
+    <library_effects>
+        <effect id="material0-fx">
+            <profile_COMMON>
+                <newparam sid="material0-diff-surface">
+                    <surface type="2D">
+                        <init_from>material0-diff-tex</init_from>
+                        <format>A8R8G8B8</format>
+                    </surface>
+                </newparam>
+                <newparam sid="sampler2D_param_id">
+                    <sampler2D>
+                        <source>material0-diff-surface</source>
+                        <minfilter>LINEAR_MIPMAP_LINEAR</minfilter>
+                        <magfilter>LINEAR</magfilter>
+                    </sampler2D>
+                </newparam>
+                <technique sid="common">
+                    <phong>
+                        <emission>
+                            <color>0.000000 0.000000 0.000000 1.000000</color>
+                        </emission>
+                        <ambient>
+                            <color>0.588235 0.588235 0.588235 1.000000</color>
+                        </ambient>
+                        <diffuse>
+                            <texture texture="sampler2D_param_id" texcoord="uv1"/>
+                        </diffuse>
+                        <specular>
+                            <color>0.900000 0.900000 0.900000 1.000000</color>
+                        </specular>
+                        <shininess>
+                            <float>2.000000</float>
+                        </shininess>
+                        <reflective>
+                            <color>0.000000 0.000000 0.000000 1.000000</color>
+                        </reflective>
+                        <reflectivity>
+                            <float>1</float>
+                        </reflectivity>
+                        <transparent>
+                            <color>0.000000 0.000000 0.000000 1.000000</color>
+                        </transparent>
+                        <transparency>
+                            <float>1</float>
+                        </transparency>
+                    </phong>
+                </technique>
+            </profile_COMMON>
+        </effect>
+    </library_effects>
+    <library_geometries>
+        <geometry id="ID786633168-mesh" name="ID786633168">
+            <mesh>
+                <source id="ID786633168-mesh-verts" name="verts">
+                    <float_array id="ID786633168-mesh-verts-array" count="24">-0.147735 -0.210070 -0.000001 0.102553 -0.210070 -0.000001 -0.147735 0.210071 -0.000001 0.102553 0.210070 -0.000001 -0.147735 -0.210070 1.304509 0.102553 -0.210070 1.304509 -0.147735 0.210070 1.304509 0.102553 0.210070 1.304509 </float_array>
+                    <technique_common>
+                        <accessor count="8" offset="0" source="#ID786633168-mesh-verts-array" stride="3">
+                            <param name="X" type="float"/>
+                            <param name="Y" type="float"/>
+                            <param name="Z" type="float"/>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="ID786633168-mesh-normal" name="normal">
+                    <float_array id="ID786633168-mesh-normal-array" count="90">0.000001 -0.000000 1.000000 0.000001 0.000000 1.000000 0.000001 -0.000000 1.000000 0.000001 -0.000000 1.000000 0.000001 -0.000000 1.000000 0.000001 -0.000000 1.000000 0.000000 -1.000000 0.000000 0.000000 -1.000000 0.000000 0.000000 -1.000000 0.000000 0.000000 -1.000000 0.000000 0.000000 -1.000000 0.000000 0.000000 -1.000000 0.000000 1.000000 -0.000000 0.000000 1.000000 -0.000000 0.000000 1.000000 -0.000000 0.000000 1.000000 -0.000000 0.000000 1.000000 -0.000000 0.000000 1.000000 -0.000000 0.000000 0.000000 1.000000 0.000000 0.000000 1.000000 0.000000 0.000000 1.000000 0.000000 0.000000 1.000000 0.000000 0.000000 1.000000 0.000000 0.000000 1.000000 0.000000 -1.000000 -0.000000 0.000000 -1.000000 -0.000000 0.000000 -1.000000 -0.000000 0.000000 -1.000000 -0.000000 0.000000 -1.000000 -0.000000 0.000000 -1.000000 -0.000000 0.000000 </float_array>
+                    <technique_common>
+                        <accessor count="30" offset="0" source="#ID786633168-mesh-normal-array" stride="3">
+                            <param name="X" type="float"/>
+                            <param name="Y" type="float"/>
+                            <param name="Z" type="float"/>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="ID786633168-mesh-uv1" name="uv1">
+                    <float_array id="ID786633168-mesh-uv1-array" count="60">0.073603 0.713891 0.073603 0.943684 0.235207 0.943684 0.235207 0.943684 0.235207 0.713891 0.073603 0.713891 0.808271 0.023248 0.808271 0.682898 0.975960 0.682898 0.975960 0.682898 0.975960 0.023248 0.808271 0.023248 0.027486 0.023248 0.027486 0.682898 0.388792 0.682898 0.388792 0.682898 0.388792 0.023248 0.027486 0.023248 0.808271 0.023248 0.808271 0.682898 0.975960 0.682898 0.975960 0.682898 0.975960 0.023248 0.808271 0.023248 0.411659 0.023248 0.411659 0.682898 0.772965 0.682898 0.772965 0.682898 0.772965 0.023248 0.411659 0.023248 </float_array>
+                    <technique_common>
+                        <accessor count="30" offset="0" source="#ID786633168-mesh-uv1-array" stride="2">
+                            <param name="S" type="float"/>
+                            <param name="T" type="float"/>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="ID786633168-mesh-uv2" name="uv2">
+                    <float_array id="ID786633168-mesh-uv2-array" count="60">0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 0.000000 1.000000 </float_array>
+                    <technique_common>
+                        <accessor count="30" offset="0" source="#ID786633168-mesh-uv2-array" stride="2">
+                            <param name="S" type="float"/>
+                            <param name="T" type="float"/>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <vertices id="ID786633168-mesh-vertices">
+                    <input semantic="POSITION" source="#ID786633168-mesh-verts"/>
+                </vertices>
+                <triangles count="10" material="mat0">
+                    <input offset="0" semantic="VERTEX" source="#ID786633168-mesh-vertices"/>
+                    <input offset="1" semantic="NORMAL" source="#ID786633168-mesh-normal"/>
+                    <input offset="1" semantic="TEXCOORD" source="#ID786633168-mesh-uv1" set="0"/>
+                    <input offset="1" semantic="TEXCOORD" source="#ID786633168-mesh-uv2" set="1"/>
+                    <p>4 0 7 2 6 1 7 3 4 5 5 4 0 6 5 8 4 7 5 9 0 11 1 10 1 12 7 14 5 13 7 15 1 17 3 16 3 18 6 20 7 19 6 21 3 23 2 22 2 24 4 26 6 25 4 27 2 29 0 28 </p>
+                </triangles>
+            </mesh>
+        </geometry>
+    </library_geometries>
+    <library_visual_scenes>
+        <visual_scene id="RootNode" name="RootNode">
+            <node id="ID679516496" sid="ID679516496" name="Camera">
+                <matrix sid="matrix">0.930418 0.143203 -0.337366 -33.835503 0.000000 0.920505 0.390731 39.186745 0.366501 -0.363543 0.856454 85.882965 0.000000 0.000000 0.000000 1.000000</matrix>
+                <instance_camera url="#ID679516496-persp"/>
+            </node>
+            <node id="ID786633168" sid="ID786633168" name="building6">
+                <matrix sid="matrix">-0.000001 -50.000000 0.000000 0.000001 0.000001 0.000000 30.000000 0.000000 -30.000000 0.000002 -0.000004 0.000000 0.000000 0.000000 0.000000 1.000000</matrix>
+                <instance_geometry url="#ID786633168-mesh">
+                    <bind_material>
+                        <technique_common>
+                            <instance_material symbol="mat0" target="#material0"/>
+                        </technique_common>
+                    </bind_material>
+                </instance_geometry>
+            </node>
+        </visual_scene>
+    </library_visual_scenes>
+    <scene>
+        <instance_visual_scene url="#RootNode"/>
+    </scene>
+</COLLADA>

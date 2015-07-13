@@ -36,6 +36,7 @@ class StartNode : SKNode {
         
         let handTexture = SKTexture(imageNamed:"tap1.png")
         handTexture.filteringMode = SKTextureFilteringMode.Nearest
+        
         let handTextureClick = SKTexture(imageNamed:"tap2.png")
         handTextureClick.filteringMode = SKTextureFilteringMode.Nearest
         
@@ -50,7 +51,7 @@ class StartNode : SKNode {
         let handSprite = SKSpriteNode(texture: handTexture)
 //       handSprite.xScale = 0.1
 //        handSprite.yScale = 0.1
-        handSprite.runAction(SKAction.repeatActionForever(handAnimation))
+        //handSprite.runAction(SKAction.repeatActionForever(handAnimation))
         
         addChild(handSprite)
         

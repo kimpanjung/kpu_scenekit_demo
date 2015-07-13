@@ -10,8 +10,14 @@ import UIKit
 import QuartzCore
 import SceneKit
 import SpriteKit
+import GameKit
+import iAd
 
-class GameViewController: UIViewController {
+// Insert ' Ad '
+var adBannerView: ADBannerView!
+
+
+class GameViewController: UIViewController, ADBannerViewDelegate, GKGameCenterControllerDelegate {
     
     var sceneView: SCNView{
         get{
@@ -19,8 +25,59 @@ class GameViewController: UIViewController {
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+    var leaderboardIdentifier: String = ""
+    var gameCenterEnabled: Bool = false
+    
+    func loadAds() {
+        adBannerView = ADBannerView(frame: CGRectZero)
+        adBannerView.hidden = true
+        adBannerView.delegate = self
+        view.addSubview(adBannerView)
+    }
+    
+    func authenticate() {
+        
+        var player = GKLocalPlayer.localPlayer()
+        player.authenticateHandler = {(var gameCenterVC: UIViewController!, var gameCenterError: NSError!) -> Void in
+            
+            if ((gameCenterVC) != nil) {
+                self.presentViewController(gameCenterVC, animated: true, completion: nil)
+            } else {
+                
+                if player.authenticated
+                {
+                    player.loadDefaultLeaderboardIdentifierWithCompletionHandler({ (var leaderboardIdentifier: String!, var error: NSError!) -> Void in
+                        if((error) != nil) {
+                            NSLog("\(error.localizedDescription)")
+                        } else {
+                            self.leaderboardIdentifier = leaderboardIdentifier
+                        }
+                    })
+                } else {
+                    
+                    println("not able to authenticate fail")
+                    self.gameCenterEnabled = false
+                    
+                    if (gameCenterError != nil) {
+                        println("\(gameCenterError.description)")
+                    }
+                    else {
+                        println( "error is nil")
+                    }
+                }
+            }
+        }
+    }
+
+    
+    func gameCenterViewControllerDidFinish(gameCenterViewController: GKGameCenterViewController!)
+    {
+        gameCenterViewController.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    override func viewDidLoad() {
+    
+        super.viewDidLoad()
         
         // Set up the SCNView
         sceneView.backgroundColor = UIColor.blackColor()
@@ -33,12 +90,16 @@ class GameViewController: UIViewController {
         // Set up the scene
         let scene = GameScene(view: sceneView)
         //scene.rootNode.hidden = true
-        //scene.physicsWorld.contactDelegate = scene
+        scene.physicsWorld.contactDelegate = scene
         
-        scene.physicsWorld.gravity = SCNVector3(x: 0, y: -5, z: 0)
+        scene.physicsWorld.gravity = SCNVector3(x: 0, y:-9, z: 0) // default : -9 = 9.8mh
         scene.physicsWorld.timeStep = 1.0/360
-        scene.physicsWorld.speed = 4.0;
-        scene.background.contents = UIImage(named: "ih_shrine-skybox02.jpg")
+        //scene.physicsWorld.speed = 5.0;
+        //scene.background.contents = UIImage(named: "dark-soul-clouds.png")
+
+        scene.background.contents = ["skybox_right.bmp", "skybox_left.bmp",
+        "skybox_up.bmp", "skybox_bottom.bmp",
+        "skybox_back.bmp", "skybox_front.bmp"];
 
         
         // Start playing the scene
@@ -46,8 +107,20 @@ class GameViewController: UIViewController {
         sceneView.delegate = scene
         sceneView.scene!.rootNode.hidden = false
         sceneView.play(self)
+        
+        loadAds()
+        
+        authenticate()
+    }
+    func bannerViewDidLoadAd(banner: ADBannerView!) {
+        adBannerView.center = CGPoint(x: adBannerView.center.x, y: view.bounds.size.height - adBannerView.frame.size.height/2)
+        
+        adBannerView.hidden = false
     }
     
+    func bannerView(banner: ADBannerView!, didFailToReceiveAdWithError error: NSError!) {
+        adBannerView.center = CGPoint(x: adBannerView.center.x, y: -100)
+    }
     
     override func shouldAutorotate() -> Bool {
         return true

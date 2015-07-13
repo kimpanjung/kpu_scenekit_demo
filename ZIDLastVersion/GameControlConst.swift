@@ -24,8 +24,9 @@ struct CollisionCategory {
     static let Player: Int = 0b00000010
     static let Monster: Int = 0b00000100
     static let Bullet: Int = 0b00001000
+    static let Obstacle: Int = 0b000010000
 }
 
 struct ControlVariable {
-    static let playerHeight: Float = 5.0
+    static let playerHeight: Float = 4.0
 }
