@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		890151AF1B597E2F00917107 /* StageOne.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890151AE1B597E2F00917107 /* StageOne.swift */; };
 		890184F71B52D69E00C35B70 /* skybox_back.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 890184F11B52D69E00C35B70 /* skybox_back.bmp */; };
 		890184F81B52D69E00C35B70 /* skybox_bottom.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 890184F21B52D69E00C35B70 /* skybox_bottom.bmp */; };
 		890184F91B52D69E00C35B70 /* skybox_front.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 890184F31B52D69E00C35B70 /* skybox_front.bmp */; };
@@ -99,10 +100,6 @@
 		89A9AEBC1B0129AA00EBA24C /* rc_car.dae in Resources */ = {isa = PBXBuildFile; fileRef = 89A9AEBA1B0129AA00EBA24C /* rc_car.dae */; };
 		89A9AEDF1B012FF500EBA24C /* zombie_skinned.DAE in Resources */ = {isa = PBXBuildFile; fileRef = 89A9AEDE1B012FF500EBA24C /* zombie_skinned.DAE */; };
 		89C975151B0244C000E1C390 /* buttletTexture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 89C975141B0244C000E1C390 /* buttletTexture.jpg */; };
-		89DB9F4D1B07BB0A001B8F55 /* GameLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89DB9F4C1B07BB0A001B8F55 /* GameLevel.swift */; };
-		89DB9F4F1B07C02E001B8F55 /* Array2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89DB9F4E1B07C02E001B8F55 /* Array2D.swift */; };
-		89DB9F511B08A6D2001B8F55 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89DB9F501B08A6D2001B8F55 /* Map.swift */; };
-		89DB9F531B08A6E7001B8F55 /* Tile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89DB9F521B08A6E7001B8F55 /* Tile.swift */; };
 		89DB9F551B08A6FB001B8F55 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89DB9F541B08A6FB001B8F55 /* Entity.swift */; };
 /* End PBXBuildFile section */
 
@@ -117,6 +114,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		890151AE1B597E2F00917107 /* StageOne.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageOne.swift; sourceTree = "<group>"; };
 		890184F11B52D69E00C35B70 /* skybox_back.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = skybox_back.bmp; sourceTree = "<group>"; };
 		890184F21B52D69E00C35B70 /* skybox_bottom.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = skybox_bottom.bmp; sourceTree = "<group>"; };
 		890184F31B52D69E00C35B70 /* skybox_front.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = skybox_front.bmp; sourceTree = "<group>"; };
@@ -213,10 +211,6 @@
 		89A9AEBA1B0129AA00EBA24C /* rc_car.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = rc_car.dae; sourceTree = "<group>"; };
 		89A9AEDE1B012FF500EBA24C /* zombie_skinned.DAE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = zombie_skinned.DAE; sourceTree = "<group>"; };
 		89C975141B0244C000E1C390 /* buttletTexture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = buttletTexture.jpg; sourceTree = "<group>"; };
-		89DB9F4C1B07BB0A001B8F55 /* GameLevel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameLevel.swift; sourceTree = "<group>"; };
-		89DB9F4E1B07C02E001B8F55 /* Array2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array2D.swift; sourceTree = "<group>"; };
-		89DB9F501B08A6D2001B8F55 /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
-		89DB9F521B08A6E7001B8F55 /* Tile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tile.swift; sourceTree = "<group>"; };
 		89DB9F541B08A6FB001B8F55 /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -242,6 +236,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		890151AD1B597E0E00917107 /* GameObject */ = {
+			isa = PBXGroup;
+			children = (
+				890151AE1B597E2F00917107 /* StageOne.swift */,
+			);
+			name = GameObject;
+			sourceTree = "<group>";
+		};
 		890184E41B52D25200C35B70 /* skybox */ = {
 			isa = PBXGroup;
 			children = (
@@ -253,13 +255,6 @@
 				890184F61B52D69E00C35B70 /* skybox_up.bmp */,
 			);
 			name = skybox;
-			sourceTree = "<group>";
-		};
-		890184FD1B530C2300C35B70 /* GameCenterManager */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = GameCenterManager;
 			sourceTree = "<group>";
 		};
 		890E3F701B0263E600F448C8 /* 3D_Resource */ = {
@@ -310,6 +305,7 @@
 		89401BE61B08F0DD00253674 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				89C975161B02491500E1C390 /* Particle */,
 				894CF8811B1ED181001697EB /* art.scnassets */,
 				890E3F731B0266F800F448C8 /* Sounds */,
 				899A69261AFFC0E00010A155 /* 2D_Resources */,
@@ -321,9 +317,6 @@
 		89401BE71B08F13800253674 /* TileMapClasses */ = {
 			isa = PBXGroup;
 			children = (
-				89DB9F4E1B07C02E001B8F55 /* Array2D.swift */,
-				89DB9F501B08A6D2001B8F55 /* Map.swift */,
-				89DB9F521B08A6E7001B8F55 /* Tile.swift */,
 				89DB9F541B08A6FB001B8F55 /* Entity.swift */,
 			);
 			name = TileMapClasses;
@@ -368,13 +361,9 @@
 		899A68E51AFFA85E0010A155 = {
 			isa = PBXGroup;
 			children = (
-				890185021B53168400C35B70 /* GameKit.framework */,
-				890185001B53167C00C35B70 /* iAd.framework */,
+				899FDC451B55B2DA008BCF53 /* Frameworks */,
 				895752161B2318590067CFFE /* testFIle */,
 				89401BE61B08F0DD00253674 /* Resources */,
-				89C975161B02491500E1C390 /* Particle */,
-				899A69191AFFADC30010A155 /* UIKit.framework */,
-				899A69171AFFADBA0010A155 /* SpriteKit.framework */,
 				899A68F01AFFA85E0010A155 /* ZIDLastVersion */,
 				899A69081AFFA85E0010A155 /* ZIDLastVersionTests */,
 				899A68EF1AFFA85E0010A155 /* Products */,
@@ -393,14 +382,12 @@
 		899A68F01AFFA85E0010A155 /* ZIDLastVersion */ = {
 			isa = PBXGroup;
 			children = (
-				890184FD1B530C2300C35B70 /* GameCenterManager */,
+				890151AD1B597E0E00917107 /* GameObject */,
 				89401BE71B08F13800253674 /* TileMapClasses */,
 				899A691F1AFFBF280010A155 /* GameOverlay */,
 				899A68F31AFFA85E0010A155 /* AppDelegate.swift */,
 				899A68F71AFFA85E0010A155 /* GameViewController.swift */,
-				89DB9F4C1B07BB0A001B8F55 /* GameLevel.swift */,
 				899A69151AFFAD9D0010A155 /* GameScene.swift */,
-				890E3F761B026BC600F448C8 /* OverlayScene.swift */,
 				899A691B1AFFAF730010A155 /* GameControlConst.swift */,
 				899A691D1AFFB14C0010A155 /* FireGestureRecognizer.swift */,
 				891CBF0B1B0670C30086235E /* GameView.swift */,
@@ -442,6 +429,7 @@
 			children = (
 				899A69201AFFBF380010A155 /* StartNode.swift */,
 				899A692A1AFFC6080010A155 /* LabelNode.swift */,
+				890E3F761B026BC600F448C8 /* OverlayScene.swift */,
 			);
 			name = GameOverlay;
 			sourceTree = "<group>";
@@ -479,6 +467,17 @@
 				899A69311AFFD59B0010A155 /* GameBackgroundImage1920.png */,
 			);
 			name = OverlayImage;
+			sourceTree = "<group>";
+		};
+		899FDC451B55B2DA008BCF53 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				899A69191AFFADC30010A155 /* UIKit.framework */,
+				899A69171AFFADBA0010A155 /* SpriteKit.framework */,
+				890185021B53168400C35B70 /* GameKit.framework */,
+				890185001B53167C00C35B70 /* iAd.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		89C975161B02491500E1C390 /* Particle */ = {
@@ -668,19 +667,16 @@
 				89630D401B25798700567BCB /* PlayerCharacter5.swift in Sources */,
 				89DB9F551B08A6FB001B8F55 /* Entity.swift in Sources */,
 				89630D0D1B24E9BB00567BCB /* EnemyCharacter.swift in Sources */,
-				89DB9F4D1B07BB0A001B8F55 /* GameLevel.swift in Sources */,
 				89630D3E1B25797F00567BCB /* PlayerCharacter4.swift in Sources */,
 				899A69211AFFBF380010A155 /* StartNode.swift in Sources */,
 				899A68F41AFFA85E0010A155 /* AppDelegate.swift in Sources */,
-				89DB9F531B08A6E7001B8F55 /* Tile.swift in Sources */,
 				89630D3C1B25797500567BCB /* PlayerCharacter3.swift in Sources */,
 				891CBF0C1B0670C30086235E /* GameView.swift in Sources */,
 				899A692B1AFFC6080010A155 /* LabelNode.swift in Sources */,
-				89DB9F4F1B07C02E001B8F55 /* Array2D.swift in Sources */,
 				8957521B1B2318660067CFFE /* PlayerCharacter.swift in Sources */,
 				890E3F771B026BC600F448C8 /* OverlayScene.swift in Sources */,
 				899A691E1AFFB14C0010A155 /* FireGestureRecognizer.swift in Sources */,
-				89DB9F511B08A6D2001B8F55 /* Map.swift in Sources */,
+				890151AF1B597E2F00917107 /* StageOne.swift in Sources */,
 				899A691C1AFFAF730010A155 /* GameControlConst.swift in Sources */,
 				8957521C1B2318660067CFFE /* SkinnedCharacter.swift in Sources */,
 			);
@@ -812,10 +808,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = ZIDLastVersion/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -825,10 +823,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = ZIDLastVersion/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

@@ -97,7 +97,7 @@ class GameViewController: UIViewController, ADBannerViewDelegate, GKGameCenterCo
         //scene.physicsWorld.speed = 5.0;
         //scene.background.contents = UIImage(named: "dark-soul-clouds.png")
 
-        scene.background.contents = ["skybox_right.bmp", "skybox_left.bmp",
+        scene.background.contents = ["skybox_left.bmp", "skybox_right.bmp",
         "skybox_up.bmp", "skybox_bottom.bmp",
         "skybox_back.bmp", "skybox_front.bmp"];
 
