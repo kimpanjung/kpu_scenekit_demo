@@ -236,12 +236,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		890151AD1B597E0E00917107 /* GameObject */ = {
+		890151AD1B597E0E00917107 /* GameStaticObject */ = {
 			isa = PBXGroup;
 			children = (
 				890151AE1B597E2F00917107 /* StageOne.swift */,
 			);
-			name = GameObject;
+			name = GameStaticObject;
 			sourceTree = "<group>";
 		};
 		890184E41B52D25200C35B70 /* skybox */ = {
@@ -322,7 +322,7 @@
 			name = TileMapClasses;
 			sourceTree = "<group>";
 		};
-		895752161B2318590067CFFE /* testFIle */ = {
+		895752161B2318590067CFFE /* GameDynamicObject */ = {
 			isa = PBXGroup;
 			children = (
 				895752171B2318660067CFFE /* GameObject.swift */,
@@ -334,7 +334,20 @@
 				89630D3F1B25798700567BCB /* PlayerCharacter5.swift */,
 				895752191B2318660067CFFE /* SkinnedCharacter.swift */,
 			);
-			name = testFIle;
+			name = GameDynamicObject;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		896265971B599E2900CDC377 /* GameView */ = {
+			isa = PBXGroup;
+			children = (
+				899A68F71AFFA85E0010A155 /* GameViewController.swift */,
+				899A69151AFFAD9D0010A155 /* GameScene.swift */,
+				899A691B1AFFAF730010A155 /* GameControlConst.swift */,
+				899A691D1AFFB14C0010A155 /* FireGestureRecognizer.swift */,
+				891CBF0B1B0670C30086235E /* GameView.swift */,
+			);
+			name = GameView;
 			sourceTree = "<group>";
 		};
 		89630D181B25573800567BCB /* staticObject */ = {
@@ -362,7 +375,6 @@
 			isa = PBXGroup;
 			children = (
 				899FDC451B55B2DA008BCF53 /* Frameworks */,
-				895752161B2318590067CFFE /* testFIle */,
 				89401BE61B08F0DD00253674 /* Resources */,
 				899A68F01AFFA85E0010A155 /* ZIDLastVersion */,
 				899A69081AFFA85E0010A155 /* ZIDLastVersionTests */,
@@ -382,18 +394,11 @@
 		899A68F01AFFA85E0010A155 /* ZIDLastVersion */ = {
 			isa = PBXGroup;
 			children = (
-				890151AD1B597E0E00917107 /* GameObject */,
+				896265971B599E2900CDC377 /* GameView */,
+				895752161B2318590067CFFE /* GameDynamicObject */,
+				890151AD1B597E0E00917107 /* GameStaticObject */,
 				89401BE71B08F13800253674 /* TileMapClasses */,
 				899A691F1AFFBF280010A155 /* GameOverlay */,
-				899A68F31AFFA85E0010A155 /* AppDelegate.swift */,
-				899A68F71AFFA85E0010A155 /* GameViewController.swift */,
-				899A69151AFFAD9D0010A155 /* GameScene.swift */,
-				899A691B1AFFAF730010A155 /* GameControlConst.swift */,
-				899A691D1AFFB14C0010A155 /* FireGestureRecognizer.swift */,
-				891CBF0B1B0670C30086235E /* GameView.swift */,
-				899A68F91AFFA85E0010A155 /* Main.storyboard */,
-				899A68FC1AFFA85E0010A155 /* Images.xcassets */,
-				899A68FE1AFFA85E0010A155 /* LaunchScreen.xib */,
 				899A68F11AFFA85E0010A155 /* Supporting Files */,
 			);
 			path = ZIDLastVersion;
@@ -402,6 +407,10 @@
 		899A68F11AFFA85E0010A155 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				899A68F91AFFA85E0010A155 /* Main.storyboard */,
+				899A68FC1AFFA85E0010A155 /* Images.xcassets */,
+				899A68F31AFFA85E0010A155 /* AppDelegate.swift */,
+				899A68FE1AFFA85E0010A155 /* LaunchScreen.xib */,
 				899A68F21AFFA85E0010A155 /* Info.plist */,
 			);
 			name = "Supporting Files";
